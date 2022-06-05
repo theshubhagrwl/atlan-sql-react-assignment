@@ -1,41 +1,48 @@
 import React, { useState, useEffect } from "react";
 
-import { PRODUCT } from "../data/product";
-import QueryComp from "./QueryComp";
+const QueryComp = ({ data, header }) => {
+  const [query, setQuery] = useState("");
+  const [filteredData, setFilteredData] = useState([]);
 
-const AllData = () => {
-  const [csvArray, setCsvArray] = useState([]);
-  const [header, setHeader] = useState([]);
-
-  const processCSV = (str, delim = ",") => {
-    const headers = str.slice(0, str.indexOf("\n")).split(delim);
-    setHeader(headers);
-    const rows = str.slice(str.indexOf("\n") + 1).split("\n");
-
-    const newArray = rows.map((row) => {
-      const values = row.split(delim);
-      const eachObject = headers.reduce((prev, header, i) => {
-        prev[header] = values[i];
-        return prev;
-      }, {});
-      return eachObject;
-    });
-
-    setCsvArray(newArray);
+  const processQuery = () => {
+    let temp = [];
+    let keyWords = query.split(" ");
+    console.log(keyWords);
+    let firstItemName = keyWords[0] ? keyWords[0] : null;
+    let operator = keyWords[1] ? keyWords[1] : null;
+    let secondItemName = keyWords[2] ? keyWords[2] : null;
+    if (secondItemName && firstItemName) {
+      data.map((dItem) => {
+        if (eval(`dItem.${firstItemName} ${operator} ${secondItemName}`)) {
+          console.log(dItem);
+          temp.push(dItem);
+        }
+      });
+    }
+    setFilteredData(temp);
   };
-
-  useEffect(() => {
-    processCSV(PRODUCT);
-  }, []);
-
-  console.log(csvArray);
 
   return (
     <>
-      <QueryComp data={csvArray} header={header} />
-
+      <h2>Enter query here</h2>
+      <div>QueryComp</div>
+      Select * from Product where{" "}
+      <input
+        type="text"
+        onChange={(e) => {
+          setQuery(e.target.value);
+        }}
+      ></input>
+      <button
+        type="submit"
+        onClick={() => {
+          processQuery();
+        }}
+      >
+        Submit
+      </button>
       <div>
-        {csvArray.length > 0 ? (
+        {filteredData.length > 0 ? (
           <>
             <table>
               <thead>
@@ -51,7 +58,7 @@ const AllData = () => {
                 <th>discontinued</th>
               </thead>
               <tbody>
-                {csvArray.map((item, i) => (
+                {filteredData.map((item, i) => (
                   <tr key={i}>
                     <td>{item.productID}</td>
                     <td>{item.productName}</td>
@@ -74,4 +81,4 @@ const AllData = () => {
   );
 };
 
-export default AllData;
+export default QueryComp;
