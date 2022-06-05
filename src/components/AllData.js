@@ -33,7 +33,7 @@ const AllData = () => {
   return (
     <>
       <QueryComp data={csvArray} header={header} />
-
+      <h2>Product Data</h2>
       <div>
         {csvArray.length > 0 ? (
           <>

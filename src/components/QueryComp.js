@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
 
+import "../App.css";
+
 const QueryComp = ({ data, header }) => {
   const [query, setQuery] = useState("");
   const [filteredData, setFilteredData] = useState([]);
@@ -12,12 +14,21 @@ const QueryComp = ({ data, header }) => {
     let operator = keyWords[1] ? keyWords[1] : null;
     let secondItemName = keyWords[2] ? keyWords[2] : null;
     if (secondItemName && firstItemName) {
-      data.map((dItem) => {
-        if (eval(`dItem.${firstItemName} ${operator} ${secondItemName}`)) {
-          console.log(dItem);
-          temp.push(dItem);
-        }
-      });
+      if (operator === "=") {
+        data.map((dItem) => {
+          if (eval(`dItem.${firstItemName} == ${secondItemName}`)) {
+            console.log(dItem);
+            temp.push(dItem);
+          }
+        });
+      } else {
+        data.map((dItem) => {
+          if (eval(`dItem.${firstItemName} ${operator} ${secondItemName}`)) {
+            console.log(dItem);
+            temp.push(dItem);
+          }
+        });
+      }
     }
     setFilteredData(temp);
   };
@@ -25,7 +36,6 @@ const QueryComp = ({ data, header }) => {
   return (
     <>
       <h2>Enter query here</h2>
-      <div>QueryComp</div>
       Select * from Product where{" "}
       <input
         type="text"
@@ -41,6 +51,7 @@ const QueryComp = ({ data, header }) => {
       >
         Submit
       </button>
+      {filteredData.length > 0 ? <h3>Result:</h3> : ""}
       <div>
         {filteredData.length > 0 ? (
           <>
@@ -59,7 +70,7 @@ const QueryComp = ({ data, header }) => {
               </thead>
               <tbody>
                 {filteredData.map((item, i) => (
-                  <tr key={i}>
+                  <tr key={i} className="row">
                     <td>{item.productID}</td>
                     <td>{item.productName}</td>
                     <td>{item.supplierID}</td>
