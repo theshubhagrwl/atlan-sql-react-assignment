@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 
 import { PRODUCT } from "../data/product";
-import { SUPPLIERS } from "../data/suppliers";
+import { ORDERS } from "../data/order";
 import QueryComp from "./QueryComp";
 
 const AllData = () => {
@@ -31,8 +31,8 @@ const AllData = () => {
     if (dataSet === "product") {
       processCSV(PRODUCT);
     }
-    if (dataSet === "suppliers") {
-      processCSV(SUPPLIERS);
+    if (dataSet === "ORDERS") {
+      processCSV(ORDERS);
     }
   }, [dataSet]);
 
@@ -84,34 +84,30 @@ const AllData = () => {
             ) : (
               <table>
                 <thead>
-                  <th>supplierID</th>
-                  <th>companyName</th>
-                  <th>contactName</th>
-                  <th>contactTitle</th>
-                  <th>address</th>
-                  <th>city</th>
-                  <th>region</th>
-                  <th>postalCode</th>
-                  <th>country</th>
-                  <th>phone</th>
-                  <th>fax</th>
-                  <th>homePage</th>
+                  <th>orderID</th>
+                  <th>customerID</th>
+                  <th>employeeID</th>
+                  <th>orderDate</th>
+                  <th>requiredDate</th>
+                  <th>shippedDate</th>
+                  <th>shipVia</th>
+                  <th>freight</th>
+                  <th>shipName</th>
+                  <th>shipAddress</th>
                 </thead>
                 <tbody>
                   {csvArray.map((item, i) => (
                     <tr key={i}>
-                      <td>{item.supplierID}</td>
-                      <td>{item.companyName}</td>
-                      <td>{item.contactName}</td>
-                      <td>{item.contactTitle}</td>
-                      <td>{item.address}</td>
-                      <td>{item.city}</td>
-                      <td>{item.region}</td>
-                      <td>{item.postalCode}</td>
-                      <td>{item.country}</td>
-                      <td>{item.phone}</td>
-                      <td>{item.fax}</td>
-                      <td>{item.homePage}</td>
+                      <td>{item.orderID}</td>
+                      <td>{item.customerID}</td>
+                      <td>{item.employeeID}</td>
+                      <td>{item.orderDate}</td>
+                      <td>{item.requiredDate}</td>
+                      <td>{item.shippedDate}</td>
+                      <td>{item.shipVia}</td>
+                      <td>{item.freight}</td>
+                      <td>{item.shipName}</td>
+                      <td>{item.shipAddress}</td>
                     </tr>
                   ))}
                 </tbody>
